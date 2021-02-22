@@ -4,16 +4,12 @@ import java.util.List;
 
 import tn.esprit.spring.entities.Contrat;
 
-
 public interface IContratService {
-	
-	
+
 	public List<Contrat> getAllContrats();
 
+	public void mettreAjoursalireByContractReferenceJPQL(float salaire, String reference);
 
-	
-	
-	
+	public String getDetailBycontratreferenceJPQL(String reference);
 
-	
 }
