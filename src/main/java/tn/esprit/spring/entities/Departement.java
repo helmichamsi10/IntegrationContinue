@@ -19,73 +19,72 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Departement implements Serializable {
 
-	private static final long serialVersionUID = -357738161698377833L;
+    private static final long serialVersionUID = -357738161698377833L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	
-	private String name;
-	
-	//@JsonManagedReference 
-	@JsonIgnore
-	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private List<Employe> employes;
-	
-	@OneToMany(mappedBy="departement")
-	private List<Mission> missions;
-	
-	@ManyToOne
-	private Entreprise entreprise;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public Departement() {
-		super();
-	}
-	
-	public Departement(String name) {
-		this.name = name;
-	}
-	
-	public int getId() {
-		return id;
-	}
+    private String name;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    //@JsonManagedReference
+    @JsonIgnore
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
 
-	public String getName() {
-		return name;
-	}
+    private List<Employe> employes;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @OneToMany(mappedBy = "departement")
+    private List<Mission> missions;
 
-	public List<Employe> getEmployes() {
-		return employes;
-	}
+    @ManyToOne
+    private Entreprise entreprise;
 
-	public void setEmployes(List<Employe> employes) {
-		this.employes = employes;
-	}
+    public Departement() {
+        super();
+    }
 
-	public List<Mission> getMissions() {
-		return missions;
-	}
+    public Departement(String name) {
+        this.name = name;
+    }
 
-	public void setMissions(List<Mission> missions) {
-		this.missions = missions;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public Entreprise getEntreprise() {
-		return entreprise;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setEntreprise(Entreprise entreprise) {
-		this.entreprise = entreprise;
-	}
-	
-	
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Employe> getEmployes() {
+        return employes;
+    }
+
+    public void setEmployes(List<Employe> employes) {
+        this.employes = employes;
+    }
+
+    public List<Mission> getMissions() {
+        return missions;
+    }
+
+    public void setMissions(List<Mission> missions) {
+        this.missions = missions;
+    }
+
+    public Entreprise getEntreprise() {
+        return entreprise;
+    }
+
+    public void setEntreprise(Entreprise entreprise) {
+        this.entreprise = entreprise;
+    }
 
 }
