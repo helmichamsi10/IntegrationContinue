@@ -43,16 +43,17 @@ public class DepartementTest extends BaseJUnit49TestCase{
         affecterDepartementAEntrepriseTest();
         getAllDepartementsNamesByEntrepriseTest();
         deleteDepartementByIdTest();
+        LOG.info("TEST OF DEPARTMENT FINISHED SUCCESSFULY");
     }
 
 	public void deleteDepartementByIdTest() {
 		LOG.info("-------------------------- Start Method Delete Departement By Id ------------------------");
 		LOG.info("The Dep will be deleted is : " , this.departement);
-		//departement.setId(ientrepriseservice.ajouterDepartement(departement));
-		LOG.info(departement.getId());
-		ientrepriseservice.deleteDepartementById(departement.getId());
-		LOG.info(departement.getId());
-		Assert.assertFalse(deptRepoistory.findById(departement.getId()).isPresent());
+		ientrepriseservice.ajouterDepartement(this.departement);
+		LOG.info(this.departement.getId());
+		ientrepriseservice.deleteDepartementById(this.departement.getId());
+		LOG.info(this.departement.getId());
+		Assert.assertFalse(deptRepoistory.findById(this.departement.getId()).isPresent());
 		LOG.info(" Delete Departement By Id has been finished successfuly ");
 		LOG.info("-------------------------- Method By Id has been finished successfuly ---------------------");
 
@@ -60,7 +61,6 @@ public class DepartementTest extends BaseJUnit49TestCase{
 	
 	public void getAllDepartementsNamesByEntrepriseTest() {
 		LOG.info("-------------------- Start Method getAllDepartementsNamesByEntreprise -------------------------");
-		//entreprise.setId(ientrepriseservice.ajouterEntreprise(entreprise));
 		List<String>depNames = ientrepriseservice.getAllDepartementsNamesByEntreprise(entreprise.getId());
 		LOG.info(depNames);
 		Assert.assertTrue(!depNames.isEmpty());

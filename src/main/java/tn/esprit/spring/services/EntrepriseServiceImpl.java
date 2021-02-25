@@ -1,8 +1,12 @@
 package tn.esprit.spring.services;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,58 +19,72 @@ import tn.esprit.spring.repository.EntrepriseRepository;
 @Service
 public class EntrepriseServiceImpl implements IEntrepriseService {
 
+	private static final Logger LOG = LogManager.getLogger(EntrepriseServiceImpl.class);
+	private static final String ENTREPRISEID = "Entreprise Id";
+	private static final String DEPARTMENTID = "Department Id";
 	@Autowired
-    EntrepriseRepository entrepriseRepoistory;
+	EntrepriseRepository entrepriseRepoistory;
 	@Autowired
 	DepartementRepository deptRepoistory;
-	
+
 	public int ajouterEntreprise(Entreprise entreprise) {
 		entrepriseRepoistory.save(entreprise);
+		LOG.info(MessageFormat.format("Entreprise already Created", entreprise.getName()));
 		return entreprise.getId();
 	}
 
 	public int ajouterDepartement(Departement dep) {
 		deptRepoistory.save(dep);
+		LOG.info(MessageFormat.format("Departement already Created", dep.getName()));
 		return dep.getId();
 	}
-	
+
 	public void affecterDepartementAEntreprise(int depId, int entrepriseId) {
-		//Le bout Master de cette relation N:1 est departement  
-				//donc il faut rajouter l'entreprise a departement 
-				// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
-				//Rappel : la classe qui contient mappedBy represente le bout Slave
-				//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
-				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
-				Departement depManagedEntity = deptRepoistory.findById(depId).get();
-				
-				depManagedEntity.setEntreprise(entrepriseManagedEntity);
-				deptRepoistory.save(depManagedEntity);
-		
-	}
-	
-	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
 		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
+		Departement depManagedEntity = deptRepoistory.findById(depId).get();
+		depManagedEntity.setEntreprise(entrepriseManagedEntity);
+		deptRepoistory.save(depManagedEntity);
+		LOG.info(MessageFormat.format("Departement " + depId + "affected to Entreprise :", entrepriseId));
+
+	}
+
+	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
+		LOG.info("Get All Departement Names by Entreprise");
+		Optional<Entreprise> entreprise = entrepriseRepoistory.findById(entrepriseId);
 		List<String> depNames = new ArrayList<>();
-		for(Departement dep : entrepriseManagedEntity.getDepartements()){
-			depNames.add(dep.getName());
+		if (entreprise.isPresent()) {
+			for (Departement dep : entreprise.get().getDepartements()) {
+				depNames.add(dep.getName());
+				LOG.debug(dep.getName());
+			}
 		}
-		
 		return depNames;
 	}
 
 	@Transactional
 	public void deleteEntrepriseById(int entrepriseId) {
-		entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).get());	
+		entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).get());
 	}
 
 	@Transactional
 	public void deleteDepartementById(int depId) {
-		deptRepoistory.delete(deptRepoistory.findById(depId).get());	
+		Departement dep = null;
+		LOG.info(MessageFormat.format("Start Method Delete Departement By ID", depId));
+		Optional<Departement> departement = deptRepoistory.findById(depId);
+		LOG.info("*********" + departement.get() + "**********");
+
+		if (departement.isPresent()) {
+			dep = departement.get();
+			LOG.info("*********" + dep.getId() + "**********");
+			deptRepoistory.delete(dep);
+			LOG.info(MessageFormat.format("Department Id has been Deleted : ", depId));
+
+		}
+
 	}
 
-
 	public Entreprise getEntrepriseById(int entrepriseId) {
-		return entrepriseRepoistory.findById(entrepriseId).get();	
+		return entrepriseRepoistory.findById(entrepriseId).get();
 	}
 
 }
