@@ -38,9 +38,9 @@ public class EmployeTests extends BaseJUnit49TestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		this.employe = new Employe();
-		this.employe.setPrenom("safwen");
-		this.employe.setNom("saf");
-		this.employe.setEmail("safwen.bentili@esprit.tn");
+		this.employe.setPrenom("amir");
+		this.employe.setNom("essouri");
+		this.employe.setEmail("amir.essouri@esprit.tn");
 		this.employe.setPassword(getIdHelper().createRandomString(5));
 		this.employe.setActif(true);
 		this.employe.setRole(Role.INGENIEUR);
@@ -70,14 +70,11 @@ public class EmployeTests extends BaseJUnit49TestCase {
 		this.employe = iempServ.getAllEmployes().stream().filter(x -> x.getId() == this.employe.getId()).findFirst()
 				.get();
 		Departement dd = null;
-		// if (this.employe.getDepartements()==null)
-		// {
 		for (Departement d : this.employe.getDepartements()) {
 			if (d.getId() == this.departement.getId())
 				dd = d;
 		}
 		Assert.assertTrue(dd.getId() == this.departement.getId());
-		// }
 		LOG.info(this.employe);
 		LOG.info("End Method affecterEmployeADepartement ");
 
@@ -127,7 +124,6 @@ public class EmployeTests extends BaseJUnit49TestCase {
 
 		iempServ.deleteContratById(this.contrat.getReference());
 		Optional<Contrat> cont = contratRepoistory.findById(this.contrat.getReference());
-		System.out.println(cont.get().getReference());
 		Assert.assertTrue(cont.isPresent());
 
 		LOG.info("End deleteContratByRef");
