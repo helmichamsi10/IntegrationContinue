@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.services.IEntrepriseService;
 import tn.esprit.spring.utils.BaseJUnit49TestCase;
+
+
 @SpringBootTest
 public class EntrepriseTest extends BaseJUnit49TestCase {
 	private static final Logger LOG = LogManager.getLogger(EntrepriseTest.class);
