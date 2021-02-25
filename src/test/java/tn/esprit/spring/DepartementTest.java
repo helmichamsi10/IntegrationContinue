@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.repository.DepartementRepository;
-import tn.esprit.spring.repository.EntrepriseRepository;
 import tn.esprit.spring.services.IEntrepriseService;
 import tn.esprit.spring.utils.BaseJUnit49TestCase;
 
@@ -21,8 +20,6 @@ public class DepartementTest extends BaseJUnit49TestCase{
 
 	@Autowired
 	DepartementRepository deptRepoistory;
-	@Autowired
-	EntrepriseRepository entrepriseRepoistory;
 	@Autowired
 	IEntrepriseService ientrepriseservice;
 	
@@ -33,11 +30,11 @@ public class DepartementTest extends BaseJUnit49TestCase{
     public void setUp() throws Exception {
         super.setUp();
         this.departement = new Departement();
-        this.departement.setName(getIdHelper().createRandomString(5));
+        this.departement.setName("DATA SC DEPARTEMENT");
 
         this.entreprise = new Entreprise();
-        this.entreprise.setName(getIdHelper().createRandomString(5));
-        this.entreprise.setRaisonSocial(getIdHelper().createRandomString(5));
+        this.entreprise.setName("TESLA");
+        this.entreprise.setRaisonSocial("100000TUN103");
     }
 	
 	@Test
@@ -49,45 +46,47 @@ public class DepartementTest extends BaseJUnit49TestCase{
     }
 
 	public void deleteDepartementByIdTest() {
-		LOG.info("Start Method Delete Departement By Id");
-		LOG.info(this.departement);
-		departement.setId(ientrepriseservice.ajouterDepartement(departement));
+		LOG.info("-------------------------- Start Method Delete Departement By Id ------------------------");
+		LOG.info("The Dep will be deleted is : " , this.departement);
+		//departement.setId(ientrepriseservice.ajouterDepartement(departement));
+		LOG.info(departement.getId());
 		ientrepriseservice.deleteDepartementById(departement.getId());
+		LOG.info(departement.getId());
 		Assert.assertFalse(deptRepoistory.findById(departement.getId()).isPresent());
-		LOG.info("Delete Departement By Id has been finished successfuly");
-		LOG.info("Method By Id has been finished successfuly");
+		LOG.info(" Delete Departement By Id has been finished successfuly ");
+		LOG.info("-------------------------- Method By Id has been finished successfuly ---------------------");
 
 	}
 	
 	public void getAllDepartementsNamesByEntrepriseTest() {
-		LOG.info("Start Method getAllDepartementsNamesByEntreprise");
-		entreprise.setId(ientrepriseservice.ajouterEntreprise(entreprise));
-		List<String> depNames = ientrepriseservice.getAllDepartementsNamesByEntreprise(entreprise.getId());
+		LOG.info("-------------------- Start Method getAllDepartementsNamesByEntreprise -------------------------");
+		//entreprise.setId(ientrepriseservice.ajouterEntreprise(entreprise));
+		List<String>depNames = ientrepriseservice.getAllDepartementsNamesByEntreprise(entreprise.getId());
 		LOG.info(depNames);
-		Assert.assertTrue(depNames.size() > 0);
-		LOG.info("End Method getAllDepartementsNamesByEntreprise");
+		Assert.assertTrue(!depNames.isEmpty());
+		LOG.info("--------------------- End Method getAllDepartementsNamesByEntreprise ---------------------------");
 	}
 
 	public void affecterDepartementAEntrepriseTest() {
-		LOG.info("Start Method affecter Departement An Entreprise");
+		LOG.info("------------------- Start Method affecter Departement An Entreprise ---------------------------");
 		LOG.info(this.departement);
 		LOG.info(this.entreprise);
-		ientrepriseservice.ajouterDepartement(departement);
 		ientrepriseservice.ajouterEntreprise(entreprise);
 		Assert.assertNull(departement.getEntreprise());
+		LOG.info(departement.getEntreprise());
 		ientrepriseservice.affecterDepartementAEntreprise(departement.getId(), entreprise.getId());
-		Assert.assertNotNull(ientrepriseservice.getAllDepartementsNamesByEntreprise(entreprise.getId()));
+		Assert.assertFalse(ientrepriseservice.getAllDepartementsNamesByEntreprise(entreprise.getId()).isEmpty());
 		LOG.info("tThe Method affecterDepartementAEntreprise has been finished successfuly");		
 		LOG.info("End Method affecterDepartementAEntreprise");
 	}
 	
 	public void ajouterDepartementTest() {
-		LOG.info("Start Method ADD Departement");
+		LOG.info("--------------------- Start Method ADD Departement ------------------------");
 		LOG.info(this.departement);
 		ientrepriseservice.ajouterDepartement(departement);
 		Assert.assertTrue(ientrepriseservice.ajouterDepartement(departement) > 0);
-		LOG.info("Department Added Method ADD Departement");
-		LOG.info("End Method ADD Departement");
+		LOG.info("Departement has been Added successfly");
+		LOG.info("--------------------- End Method ADD Departement --------------------------");
 	}
 	
 
