@@ -1,18 +1,14 @@
 package tn.esprit.spring;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
+
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.repository.DepartementRepository;
@@ -46,22 +42,24 @@ public class DepartementTest extends BaseJUnit49TestCase{
 	
 	@Test
     public void tests() throws ParseException {
-		ajouterDepartement();
-        affecterDepartementAEntreprise();
-        getAllDepartementsNamesByEntreprise();
-        deleteDepartementById();
+		ajouterDepartementTest();
+        affecterDepartementAEntrepriseTest();
+        getAllDepartementsNamesByEntrepriseTest();
+        deleteDepartementByIdTest();
     }
 
-	public void deleteDepartementById() {
-		LOG.info("StartMethodSeleteDepartementById");
+	public void deleteDepartementByIdTest() {
+		LOG.info("Start Method Delete Departement By Id");
 		LOG.info(this.departement);
 		departement.setId(ientrepriseservice.ajouterDepartement(departement));
 		ientrepriseservice.deleteDepartementById(departement.getId());
 		Assert.assertFalse(deptRepoistory.findById(departement.getId()).isPresent());
-		LOG.info("EndDeleteDepartementById");
+		LOG.info("Delete Departement By Id has been finished successfuly");
+		LOG.info("Method By Id has been finished successfuly");
+
 	}
 	
-	public void getAllDepartementsNamesByEntreprise() {
+	public void getAllDepartementsNamesByEntrepriseTest() {
 		LOG.info("Start Method getAllDepartementsNamesByEntreprise");
 		entreprise.setId(ientrepriseservice.ajouterEntreprise(entreprise));
 		List<String> depNames = ientrepriseservice.getAllDepartementsNamesByEntreprise(entreprise.getId());
@@ -70,8 +68,8 @@ public class DepartementTest extends BaseJUnit49TestCase{
 		LOG.info("End Method getAllDepartementsNamesByEntreprise");
 	}
 
-	public void affecterDepartementAEntreprise() {
-		LOG.info("Start Method affecterDepartementAEntreprise");
+	public void affecterDepartementAEntrepriseTest() {
+		LOG.info("Start Method affecter Departement An Entreprise");
 		LOG.info(this.departement);
 		LOG.info(this.entreprise);
 		ientrepriseservice.ajouterDepartement(departement);
@@ -79,15 +77,17 @@ public class DepartementTest extends BaseJUnit49TestCase{
 		Assert.assertNull(departement.getEntreprise());
 		ientrepriseservice.affecterDepartementAEntreprise(departement.getId(), entreprise.getId());
 		Assert.assertNotNull(ientrepriseservice.getAllDepartementsNamesByEntreprise(entreprise.getId()));
+		LOG.info("tThe Method affecterDepartementAEntreprise has been finished successfuly");		
 		LOG.info("End Method affecterDepartementAEntreprise");
 	}
 	
-	public void ajouterDepartement() {
-		LOG.info("Start Method ajouterDepartement");
+	public void ajouterDepartementTest() {
+		LOG.info("Start Method ADD Departement");
 		LOG.info(this.departement);
 		ientrepriseservice.ajouterDepartement(departement);
 		Assert.assertTrue(ientrepriseservice.ajouterDepartement(departement) > 0);
-		LOG.info("End Method ajouterDepartement");
+		LOG.info("Department Added Method ADD Departement");
+		LOG.info("End Method ADD Departement");
 	}
 	
 
