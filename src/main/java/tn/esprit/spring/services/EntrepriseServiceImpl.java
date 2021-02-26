@@ -45,7 +45,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 		Optional<Departement> depManagedEntity = deptRepoistory.findById(depId);
 
-		if (entrepriseManagedEntity.isPresent()) {
+		if (entrepriseManagedEntity.isPresent() && depManagedEntity.isPresent()) {
 			depManagedEntity.get().setEntreprise(entrepriseManagedEntity.get());
 			deptRepoistory.save(depManagedEntity.get());
 			LOG.info(MessageFormat.format("Departement " + depId + "affected to Entreprise :", entrepriseId));
