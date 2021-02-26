@@ -62,27 +62,27 @@ public class DepartementTest extends BaseJUnit49TestCase{
 	public void getAllDepartementsNamesByEntrepriseTest() {
 		LOG.info("-------------------- Start Method getAllDepartementsNamesByEntreprise -------------------------");
 		List<String>depNames = ientrepriseservice.getAllDepartementsNamesByEntreprise(entreprise.getId());
-		LOG.info(depNames);
+		LOG.debug(depNames);
 		Assert.assertTrue(!depNames.isEmpty());
 		LOG.info("--------------------- End Method getAllDepartementsNamesByEntreprise ---------------------------");
 	}
 
 	public void affecterDepartementAEntrepriseTest() {
 		LOG.info("------------------- Start Method affecter Departement An Entreprise ---------------------------");
-		LOG.info(this.departement);
-		LOG.info(this.entreprise);
+		LOG.debug(this.departement);
+		LOG.debug(this.entreprise);
 		ientrepriseservice.ajouterEntreprise(entreprise);
 		Assert.assertNull(departement.getEntreprise());
 		LOG.info(departement.getEntreprise());
 		ientrepriseservice.affecterDepartementAEntreprise(departement.getId(), entreprise.getId());
 		Assert.assertFalse(ientrepriseservice.getAllDepartementsNamesByEntreprise(entreprise.getId()).isEmpty());
-		LOG.info("tThe Method affecterDepartementAEntreprise has been finished successfuly");		
+		LOG.info("The Method affecterDepartementAEntreprise has been finished successfuly");		
 		LOG.info("End Method affecterDepartementAEntreprise");
 	}
 	
 	public void ajouterDepartementTest() {
 		LOG.info("--------------------- Start Method ADD Departement ------------------------");
-		LOG.info(this.departement);
+		LOG.debug(this.departement);
 		ientrepriseservice.ajouterDepartement(departement);
 		Assert.assertTrue(ientrepriseservice.ajouterDepartement(departement) > 0);
 		LOG.info("Departement has been Added successfly");
