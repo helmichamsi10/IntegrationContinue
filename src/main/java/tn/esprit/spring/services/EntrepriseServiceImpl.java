@@ -40,12 +40,18 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	}
 
 	public void affecterDepartementAEntreprise(int depId, int entrepriseId) {
-		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
-		Departement depManagedEntity = deptRepoistory.findById(depId).get();
-		depManagedEntity.setEntreprise(entrepriseManagedEntity);
-		deptRepoistory.save(depManagedEntity);
-		LOG.info(MessageFormat.format("Departement " + depId + "affected to Entreprise :", entrepriseId));
+		LOG.info("Get All Departement Names by Entreprise");
+		Optional<Entreprise> entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId);
 
+		Optional<Departement> depManagedEntity = deptRepoistory.findById(depId);
+
+		if (entrepriseManagedEntity.isPresent()) {
+			depManagedEntity.get().setEntreprise(entrepriseManagedEntity.get());
+			deptRepoistory.save(depManagedEntity.get());
+			LOG.info(MessageFormat.format("Departement " + depId + "affected to Entreprise :", entrepriseId));
+		} else {
+			LOG.error("Error during affecting Departement to Entreprise");
+		}
 	}
 
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
@@ -63,6 +69,8 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 	@Transactional
 	public void deleteEntrepriseById(int entrepriseId) {
+		LOG.info("Get All Departement Names by Entreprise");
+		Optional<Entreprise> entreprise = entrepriseRepoistory.findById(entrepriseId);
 		entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).get());
 	}
 
@@ -71,11 +79,8 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		Departement dep = null;
 		LOG.info(MessageFormat.format("Start Method Delete Departement By ID", depId));
 		Optional<Departement> departement = deptRepoistory.findById(depId);
-		LOG.info("*********" + departement.get() + "**********");
-
 		if (departement.isPresent()) {
 			dep = departement.get();
-			LOG.info("*********" + dep.getId() + "**********");
 			deptRepoistory.delete(dep);
 			LOG.info(MessageFormat.format("Department Id has been Deleted : ", depId));
 
