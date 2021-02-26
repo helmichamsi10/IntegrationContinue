@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface EmployeRepository extends CrudRepository<Employe, Integer> {
 
-    @Query("SELECT e FROM Employe e WHERE e.email=:email and e.password=:password")
+    //@Query("SELECT e FROM Employe e WHERE e.email=:email and e.password=:password")
     Employe getEmployeByEmailAndPassword(@Param("email") String login, @Param("password") String password);
 
 
